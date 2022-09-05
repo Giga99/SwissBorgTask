@@ -1,0 +1,42 @@
+buildscript {
+    ext {
+        composeVersion = '1.1.0-beta01'
+        coreKtxVersion = '1.7.0'
+        lifecycleKtxVersion = '2.3.1'
+        activityComposeVersion = '1.3.1'
+        viewModelCompose = '2.5.0'
+
+        // Dagger-Hilt
+        hiltVersion = '2.42'
+        hiltCompilerVersion = '1.0.0'
+
+        // Timber
+        timberVersion = '5.0.1'
+
+        // Retrofit
+        retrofitVersion = '2.9.0'
+
+        // OkHttp
+        okHttpVersion = '5.0.0-alpha.3'
+
+        // Moshi
+        moshiVersion = '1.13.0'
+
+        // Tests
+        junitVersion = '4.13.2'
+        junitExtVersion = '1.1.3'
+        espressoVersion = '3.4.0'
+    }
+    dependencies {
+        classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+    }
+}// Top-level build file where you can add configuration options common to all sub-projects/modules.
+plugins {
+    id 'com.android.application' version '7.2.1' apply false
+    id 'com.android.library' version '7.2.1' apply false
+    id 'org.jetbrains.kotlin.android' version '1.5.31' apply false
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
