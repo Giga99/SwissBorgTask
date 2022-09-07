@@ -27,7 +27,12 @@ class MoshiTickerAdapter @Inject constructor() : JsonAdapter<TickerResponse?>() 
         val lowIndex = highIndex + 1
 
         return TickerResponse(
-            symbol = symbol,
+            symbol = symbol
+                .removeRange(
+                    if (symbol.contains(":")) symbol.length - 4 else symbol.length - 3,
+                    symbol.length
+                )
+                .removeRange(0, 1),
             type = tickerType,
             flashReturnRate = if (tickerType == TickerType.FundingCurrency) jsonItems[1].toString().toBigDecimal() else null,
             bid = jsonItems[bidIndex].toString().toBigDecimal(),

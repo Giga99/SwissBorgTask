@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">SwissBorgTask</string>
+    <string name="no_tickers">No tickers!</string>
+    <string name="earn_yield">EARN YIELD</string>
 </resources>

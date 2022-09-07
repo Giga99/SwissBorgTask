@@ -11,7 +11,7 @@ class GetTickersUseCase @Inject constructor(
     private val tickerRepository: TickersRepository
 ) {
 
-    suspend operator fun invoke(): Result<List<TickerUIModel?>> =
+    suspend operator fun invoke(): Result<List<TickerUIModel>> =
         withContext(Dispatchers.IO) {
             val tickers = tickerRepository.getTickers(GET_TICKERS_QUERY)
             if (tickers is Result.Error)
@@ -27,15 +27,10 @@ class GetTickersUseCase @Inject constructor(
 
             Result.Success(
                 tickers.data!!.map { ticker ->
-                    if (
-                        symbolsFriendlyName.data?.keys?.contains(ticker.symbol) == true
-                        || symbolsApiSymbol.data?.keys?.contains(ticker.symbol) == true
-                    ) return@map null
-
                     TickerUIModel(
-                        friendlyName = symbolsFriendlyName.data?.get(ticker.symbol)!!,
-                        apiName = symbolsApiSymbol.data?.get(ticker.symbol)!!,
-                        ticker = ticker
+                        friendlyName = symbolsFriendlyName.data?.get(ticker.symbol),
+                        apiName = symbolsApiSymbol.data?.get(ticker.symbol),
+                        tickerModel = ticker
                     )
                 }
             )
