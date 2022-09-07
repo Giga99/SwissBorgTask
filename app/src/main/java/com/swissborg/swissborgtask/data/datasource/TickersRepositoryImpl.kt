@@ -4,15 +4,15 @@ import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.data.remote.services.TickersApiService
 import com.swissborg.swissborgtask.domain.mappers.toModel
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
-import com.swissborg.swissborgtask.domain.repositories.TickerRepository
+import com.swissborg.swissborgtask.domain.repositories.TickersRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class TickerRepositoryImpl @Inject constructor(
+class TickersRepositoryImpl @Inject constructor(
     private val tickersApiService: TickersApiService
-) : TickerRepository {
+) : TickersRepository {
 
     override suspend fun getTickers(symbols: String): Result<List<TickerModel>> =
         withContext(Dispatchers.IO) {

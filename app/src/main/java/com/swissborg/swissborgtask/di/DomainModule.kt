@@ -1,8 +1,8 @@
 package com.swissborg.swissborgtask.di
 
-import com.swissborg.swissborgtask.data.datasource.TickerRepositoryImpl
+import com.swissborg.swissborgtask.data.datasource.TickersRepositoryImpl
 import com.swissborg.swissborgtask.data.remote.services.TickersApiService
-import com.swissborg.swissborgtask.domain.repositories.TickerRepository
+import com.swissborg.swissborgtask.domain.repositories.TickersRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ object DomainModule {
 
     @Singleton
     @Provides
-    fun provideTickerRepository(
+    fun provideTickersRepository(
         tickersApiService: TickersApiService
-    ): TickerRepository = TickerRepositoryImpl(tickersApiService = tickersApiService)
+    ): TickersRepository = TickersRepositoryImpl(tickersApiService = tickersApiService)
 }
