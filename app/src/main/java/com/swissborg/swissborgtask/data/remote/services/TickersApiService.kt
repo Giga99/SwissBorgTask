@@ -1,6 +1,5 @@
 package com.swissborg.swissborgtask.data.remote.services
 
-import com.swissborg.swissborgtask.data.remote.responses.SymbolResponse
 import com.swissborg.swissborgtask.data.remote.responses.TickerResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -17,5 +16,5 @@ interface TickersApiService {
     @GET("v2/conf/pub:map:currency:{detail}")
     suspend fun getCurrencySymbol(
         @Path("detail") detail: String
-    ): Response<List<List<SymbolResponse>>>
+    ): Response<Map<String, String>>
 }

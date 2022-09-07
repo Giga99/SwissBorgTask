@@ -1,24 +1,19 @@
 package com.swissborg.swissborgtask.data.remote.adapters
 
 import com.squareup.moshi.*
-import com.swissborg.swissborgtask.data.remote.responses.SymbolResponse
 import javax.inject.Inject
-import kotlin.reflect.full.memberProperties
 
-class MoshiSymbolAdapter @Inject constructor() : JsonAdapter<SymbolResponse?>() {
+class MoshiSymbolAdapter @Inject constructor() : JsonAdapter<Map<String, String>?>() {
     @FromJson
-    override fun fromJson(reader: JsonReader): SymbolResponse {
-        val jsonItems = reader.readJsonValue() as List<*>
-        return SymbolResponse(
-            symbol = jsonItems[0].toString(),
-            friendlyName = jsonItems[1].toString()
-        )
+    override fun fromJson(reader: JsonReader): Map<String, String> {
+        val jsonItems = (reader.readJsonValue() as List<*>)[0] as List<List<String>>
+        return jsonItems.associate { it[0] to it[1] }
     }
 
     @ToJson
-    override fun toJson(writer: JsonWriter, value: SymbolResponse?) {
+    override fun toJson(writer: JsonWriter, value: Map<String, String>?) {
         if (value != null) {
-            val items = value::class.memberProperties.map { it.getter.call(value).toString() }
+            val items = value.map { listOf(it.key, it.value) }
             writer.value(items.toString())
         } else writer.nullValue()
     }
