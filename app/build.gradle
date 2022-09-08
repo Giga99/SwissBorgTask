@@ -63,7 +63,7 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$composeVersion"
 
     // Compose dependencies
-    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelCompose"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$viewModelComposeVersion"
     implementation "androidx.compose.material:material-icons-extended:$composeVersion"
 
     //Dagger - Hilt
@@ -88,5 +88,5 @@ dependencies {
     kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
 
     // Reflection
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.6.21"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$reflectionVersion"
 }
