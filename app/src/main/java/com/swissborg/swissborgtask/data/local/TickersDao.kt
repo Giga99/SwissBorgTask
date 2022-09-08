@@ -17,7 +17,7 @@ interface TickersDao {
         """
             UPDATE ${TickerEntity.TABLE_NAME}
             SET ${TickerEntity.COLUMN_FRIENDLY_NAME} = :friendlyName
-            WHERE ${TickerEntity.PREFIX_TICKER_DETAILS}${TickerEntity.TickerDetailsEntity.COLUMN_SYMBOL} = :symbol
+            WHERE ${TickerEntity.COLUMN_SYMBOL} = :symbol
         """
     )
     suspend fun updateFriendlyName(symbol: String, friendlyName: String)
@@ -26,7 +26,7 @@ interface TickersDao {
         """
             UPDATE ${TickerEntity.TABLE_NAME}
             SET ${TickerEntity.COLUMN_API_NAME} = :apiName
-            WHERE ${TickerEntity.PREFIX_TICKER_DETAILS}${TickerEntity.TickerDetailsEntity.COLUMN_SYMBOL} = :symbol
+            WHERE ${TickerEntity.COLUMN_SYMBOL} = :symbol
         """
     )
     suspend fun updateApiName(symbol: String, apiName: String)
@@ -37,7 +37,7 @@ interface TickersDao {
             FROM ${TickerEntity.TABLE_NAME}
             WHERE ${TickerEntity.COLUMN_FRIENDLY_NAME} LIKE :searchQuery 
             or ${TickerEntity.COLUMN_API_NAME} LIKE :searchQuery 
-            or ${TickerEntity.PREFIX_TICKER_DETAILS}${TickerEntity.TickerDetailsEntity.COLUMN_SYMBOL} LIKE :searchQuery
+            or ${TickerEntity.COLUMN_SYMBOL} LIKE :searchQuery
         """
     )
     fun searchTickers(searchQuery: String): Flow<List<TickerEntity>>

@@ -10,9 +10,9 @@ import java.math.BigDecimal
 
 @Entity(tableName = TABLE_NAME)
 data class TickerEntity(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = COLUMN_ID)
-    var id: Long? = null,
+    @PrimaryKey
+    @ColumnInfo(name = COLUMN_SYMBOL)
+    val symbol: String,
     @ColumnInfo(name = COLUMN_FRIENDLY_NAME)
     val friendlyName: String? = null,
     @ColumnInfo(name = COLUMN_API_NAME)
@@ -22,15 +22,13 @@ data class TickerEntity(
 ) {
     companion object {
         const val TABLE_NAME = "tickers"
-        const val COLUMN_ID = "${TABLE_NAME}_id"
+        const val COLUMN_SYMBOL = "${TABLE_NAME}_symbol"
         const val COLUMN_FRIENDLY_NAME = "${TABLE_NAME}_friendlyName"
         const val COLUMN_API_NAME = "${TABLE_NAME}_apiName"
         const val PREFIX_TICKER_DETAILS = "${TABLE_NAME}_tickerDetails_"
     }
 
     data class TickerDetailsEntity(
-        @ColumnInfo(name = COLUMN_SYMBOL)
-        val symbol: String,
         @ColumnInfo(name = COLUMN_TYPE)
         val type: TickerType,
         @ColumnInfo(name = COLUMN_FRR)
@@ -63,7 +61,6 @@ data class TickerEntity(
         val flashReturnRateAmountAvailable: BigDecimal?
     ) {
         companion object {
-            const val COLUMN_SYMBOL = "symbol"
             const val COLUMN_TYPE = "type"
             const val COLUMN_FRR = "flashReturnRate"
             const val COLUMN_BID = "bid"

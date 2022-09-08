@@ -25,7 +25,14 @@ class TickersRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             try {
                 val response = tickersApiService.getTickers(symbols).body() ?: emptyList()
-                tickersDao.insertTickers(response.map { TickerEntity(tickerDetails = it.toEntity()) })
+                tickersDao.insertTickers(
+                    response.map {
+                        TickerEntity(
+                            symbol = it.symbol,
+                            tickerDetails = it.toEntity()
+                        )
+                    }
+                )
                 Result.Success(Unit)
             } catch (e: Exception) {
                 Timber.e(e)

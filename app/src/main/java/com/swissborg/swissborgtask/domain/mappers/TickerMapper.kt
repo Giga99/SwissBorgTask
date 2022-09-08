@@ -8,7 +8,6 @@ import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 
 fun TickerResponse.toEntity(): TickerDetailsEntity =
     TickerDetailsEntity(
-        symbol = symbol,
         type = type,
         flashReturnRate = flashReturnRate,
         bid = bid,
@@ -30,10 +29,10 @@ fun TickerEntity.toModel(): TickerModel =
     TickerModel(
         friendlyName = friendlyName,
         apiName = apiName,
-        tickerDetails = tickerDetails.toModel()
+        tickerDetails = tickerDetails.toModel(symbol)
     )
 
-fun TickerDetailsEntity.toModel(): TickerDetails =
+fun TickerDetailsEntity.toModel(symbol: String): TickerDetails =
     TickerDetails(
         symbol = symbol,
         type = type,

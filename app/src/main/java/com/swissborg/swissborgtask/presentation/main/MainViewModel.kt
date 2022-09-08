@@ -6,6 +6,7 @@ import com.swissborg.swissborgtask.common.core.Constants.REFRESH_RATE
 import com.swissborg.swissborgtask.domain.usecases.FetchTickersUseCase
 import com.swissborg.swissborgtask.domain.usecases.SearchTickersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -22,6 +23,8 @@ class MainViewModel @Inject constructor(
 
     private val _viewState = MutableStateFlow(MainViewState())
     val viewState = _viewState.asStateFlow()
+
+    private var job: Job? = null
 
     init {
         Timer().scheduleAtFixedRate(object : TimerTask() {
@@ -45,9 +48,12 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun searchTickers() = viewModelScope.launch {
-        searchTickersUseCase(_viewState.value.searchQuery).collect { tickers ->
-            _viewState.update { it.copy(tickers = tickers) }
+    private fun searchTickers() {
+        job?.cancel()
+        job = viewModelScope.launch {
+            searchTickersUseCase(_viewState.value.searchQuery).collect { tickers ->
+                _viewState.update { it.copy(tickers = tickers) }
+            }
         }
     }
 }
