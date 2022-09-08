@@ -1,8 +1,13 @@
 package com.swissborg.swissborgtask.di
 
+import android.app.Application
+import androidx.room.Room
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.swissborg.swissborgtask.common.core.Constants
 import com.swissborg.swissborgtask.common.core.Constants.API_BASE_URL
+import com.swissborg.swissborgtask.data.local.SwissBorgDatabase
+import com.swissborg.swissborgtask.data.local.TickersDao
 import com.swissborg.swissborgtask.data.remote.services.TickersApiService
 import dagger.Module
 import dagger.Provides
@@ -54,4 +59,18 @@ object DataModule {
     fun provideTickersApiService(
         retrofit: Retrofit
     ): TickersApiService = retrofit.create(TickersApiService::class.java)
+
+    @Singleton
+    @Provides
+    fun provideSwissBorgDatabase(app: Application): SwissBorgDatabase =
+        Room.databaseBuilder(
+            app,
+            SwissBorgDatabase::class.java,
+            Constants.SWISS_BORG_DATABASE_NAME
+        ).build()
+
+    @Singleton
+    @Provides
+    fun provideTickersDao(swissBorgDatabase: SwissBorgDatabase): TickersDao =
+        swissBorgDatabase.tickersDao
 }

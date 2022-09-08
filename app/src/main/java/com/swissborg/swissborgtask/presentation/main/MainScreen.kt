@@ -24,7 +24,7 @@ import com.swissborg.swissborgtask.R
 import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.common.ui.toPercentage
 import com.swissborg.swissborgtask.common.ui.toPrice
-import com.swissborg.swissborgtask.domain.models.ui.TickerUIModel
+import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 import java.math.BigDecimal
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -75,9 +75,9 @@ fun MainScreen(
                 )
             }
         }
-        when (viewState.tickers) {
-            is Result.Success -> TickersListSuccess(viewState.tickers.data)
-            is Result.Error -> TickersListError(viewState.tickers.message ?: "")
+        when (viewState.fetchTickersResult) {
+            is Result.Success -> TickersListSuccess(viewState.tickers)
+            is Result.Error -> TickersListError(viewState.fetchTickersResult.message ?: "")
             is Result.Loading -> TickersListLoading()
         }
     }
@@ -85,9 +85,9 @@ fun MainScreen(
 
 @Composable
 fun ColumnScope.TickersListSuccess(
-    tickers: List<TickerUIModel>?
+    tickers: List<TickerModel>
 ) {
-    if (tickers == null || tickers.isEmpty()) {
+    if (tickers.isEmpty()) {
         Text(
             text = stringResource(R.string.no_tickers),
             style = MaterialTheme.typography.h6
@@ -105,7 +105,7 @@ fun ColumnScope.TickersListSuccess(
 
 @Composable
 fun TickerRow(
-    ticker: TickerUIModel
+    ticker: TickerModel
 ) {
     Spacer(modifier = Modifier.height(dimensionResource(R.dimen.size_8)))
     Card(
@@ -129,7 +129,7 @@ fun TickerRow(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Text(
-                        text = ticker.friendlyName ?: ticker.tickerModel.symbol,
+                        text = ticker.friendlyName ?: ticker.tickerDetails.symbol,
                         style = MaterialTheme.typography.body1,
                         fontWeight = FontWeight.ExtraBold
                     )
@@ -151,7 +151,7 @@ fun TickerRow(
                         }
                         Spacer(modifier = Modifier.width(dimensionResource(R.dimen.size_4)))
                         Text(
-                            text = ticker.apiName ?: ticker.tickerModel.symbol,
+                            text = ticker.apiName ?: ticker.tickerDetails.symbol,
                             style = MaterialTheme.typography.caption
                         )
                     }
@@ -163,14 +163,14 @@ fun TickerRow(
                 horizontalAlignment = Alignment.End
             ) {
                 val percentageTextColor =
-                    if (ticker.tickerModel.dailyChangeRelative > BigDecimal.ZERO) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.error
+                    if (ticker.tickerDetails.dailyChangeRelative > BigDecimal.ZERO) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.error
                 Text(
-                    text = ticker.tickerModel.lastPrice.toPrice(),
+                    text = ticker.tickerDetails.lastPrice.toPrice(),
                     style = MaterialTheme.typography.body1,
                     fontWeight = FontWeight.ExtraBold
                 )
                 Text(
-                    text = ticker.tickerModel.dailyChangeRelative.toPercentage(),
+                    text = ticker.tickerDetails.dailyChangeRelative.toPercentage(),
                     style = MaterialTheme.typography.caption,
                     color = percentageTextColor
                 )

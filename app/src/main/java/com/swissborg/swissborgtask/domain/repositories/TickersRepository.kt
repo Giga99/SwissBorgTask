@@ -2,10 +2,13 @@ package com.swissborg.swissborgtask.domain.repositories
 
 import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
+import kotlinx.coroutines.flow.Flow
 
 interface TickersRepository {
 
-    suspend fun getTickers(symbols: String): Result<List<TickerModel>>
+    suspend fun fetchTickers(symbols: String): Result<Unit>
 
-    suspend fun getCurrencySymbol(detail: String): Result<Map<String, String>>
+    suspend fun fetchCurrencySymbol(detail: String): Result<Unit>
+
+    suspend fun searchTickers(searchQuery: String): Flow<List<TickerModel>>
 }
