@@ -24,11 +24,22 @@ class MainViewModel @Inject constructor(
     init {
         Timer().scheduleAtFixedRate(object : TimerTask() {
             override fun run() {
-                viewModelScope.launch {
-                    val tickers = getTickersUseCase()
-                    _viewState.update { it.copy(tickers = tickers) }
-                }
+                refreshTickers()
             }
         }, Date.from(Instant.now()), REFRESH_RATE)
+    }
+
+    fun onEvent(event: MainEvent) {
+        when (event) {
+            is MainEvent.SearchQueryChange -> _viewState.update { it.copy(searchQuery = event.searchQuery) }
+            is MainEvent.SearchTickersButtonClicked -> {
+                refreshTickers()
+            }
+        }
+    }
+
+    private fun refreshTickers() = viewModelScope.launch {
+        val tickers = getTickersUseCase(_viewState.value.searchQuery)
+        _viewState.update { it.copy(tickers = tickers) }
     }
 }

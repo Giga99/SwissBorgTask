@@ -5,17 +5,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.swissborg.swissborgtask.R
 import com.swissborg.swissborgtask.common.core.Result
@@ -24,11 +27,13 @@ import com.swissborg.swissborgtask.common.ui.toPrice
 import com.swissborg.swissborgtask.domain.models.ui.TickerUIModel
 import java.math.BigDecimal
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainScreen(
     mainViewModel: MainViewModel = hiltViewModel()
 ) {
     val viewState = mainViewModel.viewState.collectAsState().value
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = Modifier
@@ -36,6 +41,40 @@ fun MainScreen(
             .background(MaterialTheme.colors.background)
             .padding(dimensionResource(R.dimen.size_16))
     ) {
+        Text(
+            text = stringResource(R.string.welcome_title),
+            style = MaterialTheme.typography.h5
+        )
+        Spacer(modifier = Modifier.height(dimensionResource(R.dimen.size_32)))
+        Text(
+            text = stringResource(R.string.search_tickers),
+            style = MaterialTheme.typography.body1
+        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            TextField(
+                value = viewState.searchQuery,
+                onValueChange = { mainViewModel.onEvent(MainEvent.SearchQueryChange(it)) },
+                placeholder = { Text(text = stringResource(R.string.search_hint)) },
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(onDone = { keyboardController?.hide() }),
+                modifier = Modifier.weight(1f)
+            )
+            Spacer(modifier = Modifier.width(dimensionResource(R.dimen.size_8)))
+            IconButton(
+                onClick = {
+                    keyboardController?.hide()
+                    mainViewModel.onEvent(MainEvent.SearchTickersButtonClicked)
+                }
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_search),
+                    contentDescription = stringResource(R.string.search)
+                )
+            }
+        }
         when (viewState.tickers) {
             is Result.Success -> TickersListSuccess(viewState.tickers.data)
             is Result.Error -> TickersListError(viewState.tickers.message ?: "")
@@ -124,7 +163,7 @@ fun TickerRow(
                 horizontalAlignment = Alignment.End
             ) {
                 val percentageTextColor =
-                    if (ticker.tickerModel.dailyChangeRelative > BigDecimal.ZERO) MaterialTheme.colors.onSurface else MaterialTheme.colors.error
+                    if (ticker.tickerModel.dailyChangeRelative > BigDecimal.ZERO) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.error
                 Text(
                     text = ticker.tickerModel.lastPrice.toPrice(),
                     style = MaterialTheme.typography.body1,

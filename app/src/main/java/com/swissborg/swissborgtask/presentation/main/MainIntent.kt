@@ -4,13 +4,11 @@ import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.domain.models.ui.TickerUIModel
 
 sealed class MainEvent {
-
-}
-
-sealed class MainSideEffect {
-
+    data class SearchQueryChange(val searchQuery: String) : MainEvent()
+    object SearchTickersButtonClicked : MainEvent()
 }
 
 data class MainViewState(
-    val tickers: Result<List<TickerUIModel>> = Result.Loading()
+    val tickers: Result<List<TickerUIModel>> = Result.Loading(),
+    val searchQuery: String = ""
 )

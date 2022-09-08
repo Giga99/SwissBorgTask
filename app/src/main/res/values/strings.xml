@@ -2,4 +2,8 @@
     <string name="app_name">SwissBorgTask</string>
     <string name="no_tickers">No tickers!</string>
     <string name="earn_yield">EARN YIELD</string>
+    <string name="welcome_title">Welcome to SwissBorgTask app!</string>
+    <string name="search_tickers">Search for different tickers</string>
+    <string name="search">Search</string>
+    <string name="search_hint">Enter ticker name</string>
 </resources>
