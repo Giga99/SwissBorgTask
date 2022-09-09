@@ -3,6 +3,7 @@ package com.swissborg.swissborgtask.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swissborg.swissborgtask.common.core.Constants.REFRESH_RATE
+import com.swissborg.swissborgtask.common.wrappers.NetworkConnectivityManager
 import com.swissborg.swissborgtask.domain.usecases.FetchTickersUseCase
 import com.swissborg.swissborgtask.domain.usecases.SearchTickersUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val fetchTickersUseCase: FetchTickersUseCase,
-    private val searchTickersUseCase: SearchTickersUseCase
+    private val searchTickersUseCase: SearchTickersUseCase,
+    private val networkConnectivityManager: NetworkConnectivityManager
 ) : ViewModel() {
 
     private val _viewState = MutableStateFlow(MainViewState())
@@ -37,6 +39,12 @@ class MainViewModel @Inject constructor(
         }, Date.from(Instant.now()), REFRESH_RATE)
 
         searchTickers()
+
+        viewModelScope.launch {
+            networkConnectivityManager.observeNetworkStatus().collect { networkStatus ->
+                _viewState.update { it.copy(networkStatus = networkStatus) }
+            }
+        }
     }
 
     fun onEvent(event: MainEvent) {

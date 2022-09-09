@@ -19,11 +19,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.swissborg.swissborgtask.R
 import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.common.ui.toPercentage
 import com.swissborg.swissborgtask.common.ui.toPrice
+import com.swissborg.swissborgtask.common.wrappers.NetworkStatus
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 import java.math.BigDecimal
 
@@ -41,9 +43,35 @@ fun MainScreen(
             .background(MaterialTheme.colors.background)
             .padding(dimensionResource(R.dimen.size_16))
     ) {
+        when (viewState.networkStatus) {
+            NetworkStatus.LOSING -> {
+                Text(
+                    text = stringResource(R.string.reconnecting),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.secondary),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.onSecondary,
+                    style = MaterialTheme.typography.body1
+                )
+            }
+            NetworkStatus.NOT_CONNECTED -> {
+                Text(
+                    text = stringResource(R.string.no_internet_connection),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.secondary),
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colors.onSecondary,
+                    style = MaterialTheme.typography.body1
+                )
+            }
+        }
         Text(
             text = stringResource(R.string.welcome_title),
-            style = MaterialTheme.typography.h5
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(dimensionResource(R.dimen.size_32)))
         Text(
