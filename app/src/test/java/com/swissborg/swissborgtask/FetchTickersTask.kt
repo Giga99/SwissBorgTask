@@ -1,26 +1,32 @@
 package com.swissborg.swissborgtask
 
-import com.swissborg.swissborgtask.domain.repositories.TickersRepository
+import com.google.common.truth.Truth.assertThat
 import com.swissborg.swissborgtask.domain.usecases.FetchTickers
-import io.mockk.MockKAnnotations
-import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FetchTickersTask {
 
     private lateinit var fetchTickers: FetchTickers
 
-    @MockK
-    lateinit var tickersRepository: TickersRepository
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineScopeRule()
 
     @Before
     fun setUp() {
-        MockKAnnotations.init(this)
-//        fetchTickers = FetchTickers(tickerRepository = tickersRepository)
+        fetchTickers = FetchTickers(
+            tickerRepository = TestTickersRepositoryImpl(),
+            dispatcherProvider = mainCoroutineRule.testDispatcherProvider
+        )
     }
 
-//    @Test
-//    fun `Test tickers fetching successful result`() = runTest(mainCoroutineRule.testDispatcher) {
-//        val result = fetchTickers()
-//    }
+    @Test
+    fun `Test tickers fetching successful result`() = runTest(mainCoroutineRule.testDispatcher) {
+        val result = fetchTickers()
+        assertThat(result.data).isEqualTo(Unit)
+    }
 }

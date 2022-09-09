@@ -33,6 +33,10 @@ buildscript {
         junitExtVersion = '1.1.3'
         espressoVersion = '3.4.0'
         mockkVersion = '1.12.0'
+        testCoroutinesVersion = '1.6.0'
+        truthVersion = '1.1.3'
+        testCoreKtxVersion = '1.4.0'
+        testExtKtxVersion = '1.1.3'
     }
     dependencies {
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
