@@ -1,6 +1,6 @@
 package com.swissborg.swissborgtask.di
 
-import com.swissborg.swissborgtask.data.datasource.TickersRepositoryImpl
+import com.swissborg.swissborgtask.data.datasource.DefaultTickersRepositoryImpl
 import com.swissborg.swissborgtask.domain.repositories.TickersRepository
 import dagger.Binds
 import dagger.Module
@@ -14,5 +14,5 @@ abstract class DomainModule {
 
     @Singleton
     @Binds
-    abstract fun provideTickersRepository(tickersRepositoryImpl: TickersRepositoryImpl): TickersRepository
+    abstract fun provideTickersRepository(defaultTickersRepositoryImpl: DefaultTickersRepositoryImpl): TickersRepository
 }

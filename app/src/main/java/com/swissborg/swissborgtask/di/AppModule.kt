@@ -2,8 +2,11 @@ package com.swissborg.swissborgtask.di
 
 import android.content.Context
 import android.net.ConnectivityManager
-import com.swissborg.swissborgtask.common.wrappers.NetworkConnectivityManager
-import com.swissborg.swissborgtask.common.wrappers.NetworkConnectivityManagerImpl
+import com.swissborg.swissborgtask.common.wrappers.connectivity.NetworkConnectivityManager
+import com.swissborg.swissborgtask.common.wrappers.connectivity.NetworkConnectivityManagerImpl
+import com.swissborg.swissborgtask.common.wrappers.dispatchers.DefaultDispatcherProviderImpl
+import com.swissborg.swissborgtask.common.wrappers.dispatchers.DispatcherProvider
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,15 +16,20 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object AppModule {
+abstract class AppModule {
 
     @Singleton
-    @Provides
-    fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
-        context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+    @Binds
+    abstract fun bindNetworkConnectivityManager(networkConnectivityManagerImpl: NetworkConnectivityManagerImpl): NetworkConnectivityManager
 
     @Singleton
-    @Provides
-    fun provideNetworkConnectivityManager(connectivityManager: ConnectivityManager): NetworkConnectivityManager =
-        NetworkConnectivityManagerImpl(connectivityManager = connectivityManager)
+    @Binds
+    abstract fun bindDispatcherProvider(defaultDispatcherProviderImpl: DefaultDispatcherProviderImpl): DispatcherProvider
+
+    companion object {
+        @Singleton
+        @Provides
+        fun provideConnectivityManager(@ApplicationContext context: Context): ConnectivityManager =
+            context.getSystemService(ConnectivityManager::class.java) as ConnectivityManager
+    }
 }

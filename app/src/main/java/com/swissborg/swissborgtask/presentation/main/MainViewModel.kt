@@ -3,7 +3,7 @@ package com.swissborg.swissborgtask.presentation.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.swissborg.swissborgtask.common.core.Constants.REFRESH_RATE
-import com.swissborg.swissborgtask.common.wrappers.NetworkConnectivityManager
+import com.swissborg.swissborgtask.common.wrappers.connectivity.NetworkConnectivityManager
 import com.swissborg.swissborgtask.domain.usecases.FetchTickers
 import com.swissborg.swissborgtask.domain.usecases.SearchTickers
 import dagger.hilt.android.lifecycle.HiltViewModel

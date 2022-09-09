@@ -25,7 +25,7 @@ import com.swissborg.swissborgtask.R
 import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.common.ui.toPercentage
 import com.swissborg.swissborgtask.common.ui.toPrice
-import com.swissborg.swissborgtask.common.wrappers.NetworkStatus
+import com.swissborg.swissborgtask.common.wrappers.connectivity.NetworkStatus
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 import java.math.BigDecimal
 

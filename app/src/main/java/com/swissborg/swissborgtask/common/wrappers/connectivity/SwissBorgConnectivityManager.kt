@@ -1,4 +1,4 @@
-package com.swissborg.swissborgtask.common.wrappers
+package com.swissborg.swissborgtask.common.wrappers.connectivity
 
 import android.net.ConnectivityManager
 import android.net.Network

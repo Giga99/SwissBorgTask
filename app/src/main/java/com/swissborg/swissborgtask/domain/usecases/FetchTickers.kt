@@ -4,17 +4,18 @@ import com.swissborg.swissborgtask.common.core.Constants.GET_API_SYMBOL_PATH
 import com.swissborg.swissborgtask.common.core.Constants.GET_FRIENDLY_NAME_PATH
 import com.swissborg.swissborgtask.common.core.Constants.GET_TICKERS_QUERY
 import com.swissborg.swissborgtask.common.core.Result
+import com.swissborg.swissborgtask.common.wrappers.dispatchers.DispatcherProvider
 import com.swissborg.swissborgtask.domain.repositories.TickersRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class FetchTickers @Inject constructor(
-    private val tickerRepository: TickersRepository
+    private val tickerRepository: TickersRepository,
+    private val dispatcherProvider: DispatcherProvider
 ) {
 
     suspend operator fun invoke(): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcherProvider.io()) {
             val tickers = tickerRepository.fetchTickers(GET_TICKERS_QUERY)
             if (tickers is Result.Error)
                 return@withContext Result.Error(tickers.message ?: "Unknown error!")

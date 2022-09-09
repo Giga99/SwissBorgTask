@@ -2,6 +2,7 @@ package com.swissborg.swissborgtask.data.datasource
 
 import com.swissborg.swissborgtask.common.core.Constants
 import com.swissborg.swissborgtask.common.core.Result
+import com.swissborg.swissborgtask.common.wrappers.dispatchers.DispatcherProvider
 import com.swissborg.swissborgtask.data.local.TickersDao
 import com.swissborg.swissborgtask.data.local.entities.TickerEntity
 import com.swissborg.swissborgtask.data.remote.services.TickersApiService
@@ -9,20 +10,20 @@ import com.swissborg.swissborgtask.domain.mappers.toEntity
 import com.swissborg.swissborgtask.domain.mappers.toModel
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 import com.swissborg.swissborgtask.domain.repositories.TickersRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
-class TickersRepositoryImpl @Inject constructor(
+class DefaultTickersRepositoryImpl @Inject constructor(
     private val tickersApiService: TickersApiService,
-    private val tickersDao: TickersDao
+    private val tickersDao: TickersDao,
+    private val dispatcherProvider: DispatcherProvider
 ) : TickersRepository {
 
     override suspend fun fetchTickers(symbols: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcherProvider.io()) {
             try {
                 val response = tickersApiService.getTickers(symbols).body() ?: emptyList()
                 tickersDao.insertTickers(
@@ -41,7 +42,7 @@ class TickersRepositoryImpl @Inject constructor(
         }
 
     override suspend fun fetchCurrencySymbol(detail: String): Result<Unit> =
-        withContext(Dispatchers.IO) {
+        withContext(dispatcherProvider.io()) {
             try {
                 val response = tickersApiService.getCurrencySymbol(detail).body() ?: emptyMap()
                 for ((key, value) in response) {
