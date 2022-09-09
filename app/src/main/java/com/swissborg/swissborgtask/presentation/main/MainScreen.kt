@@ -131,7 +131,10 @@ fun ColumnScope.TickersListSuccess(
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
-            items(tickers) {
+            items(
+                items = tickers,
+                key = { it.tickerDetails.symbol }
+            ) {
                 TickerRow(ticker = it)
             }
         }
