@@ -7,9 +7,7 @@ import javax.inject.Inject
 class MoshiBigDecimalAdapter @Inject constructor() : JsonAdapter<BigDecimal?>() {
     @FromJson
     override fun fromJson(reader: JsonReader): BigDecimal? {
-        return reader.readJsonValue()?.toString()?.let {
-            BigDecimal(it)
-        }
+        return reader.readJsonValue()?.toString()?.let { BigDecimal(it) }
     }
 
     @ToJson

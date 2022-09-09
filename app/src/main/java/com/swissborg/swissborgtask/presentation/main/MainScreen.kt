@@ -43,30 +43,7 @@ fun MainScreen(
             .background(MaterialTheme.colors.background)
             .padding(dimensionResource(R.dimen.size_16))
     ) {
-        when (viewState.networkStatus) {
-            NetworkStatus.LOSING -> {
-                Text(
-                    text = stringResource(R.string.reconnecting),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.secondary),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.onSecondary,
-                    style = MaterialTheme.typography.body1
-                )
-            }
-            NetworkStatus.NOT_CONNECTED -> {
-                Text(
-                    text = stringResource(R.string.no_internet_connection),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(MaterialTheme.colors.secondary),
-                    textAlign = TextAlign.Center,
-                    color = MaterialTheme.colors.onSecondary,
-                    style = MaterialTheme.typography.body1
-                )
-            }
-        }
+        NetworkStateMainScreen(viewState)
         Text(
             text = stringResource(R.string.welcome_title),
             style = MaterialTheme.typography.h5,
@@ -107,6 +84,36 @@ fun MainScreen(
             is Result.Success -> TickersListSuccess(viewState.tickers)
             is Result.Error -> TickersListError(viewState.fetchTickersResult.message ?: "")
             is Result.Loading -> TickersListLoading()
+        }
+    }
+}
+
+@Composable
+private fun NetworkStateMainScreen(viewState: MainViewState) {
+    when (viewState.networkStatus) {
+        NetworkStatus.LOSING -> {
+            Text(
+                text = stringResource(R.string.reconnecting),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colors.secondary),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colors.onSecondary,
+                style = MaterialTheme.typography.body1
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.size_16)))
+        }
+        NetworkStatus.NOT_CONNECTED -> {
+            Text(
+                text = stringResource(R.string.no_internet_connection),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colors.secondary),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colors.onSecondary,
+                style = MaterialTheme.typography.body1
+            )
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.size_16)))
         }
     }
 }

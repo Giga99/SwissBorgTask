@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import com.swissborg.swissborgtask.data.local.SwissBorgDatabase
+import com.swissborg.swissborgtask.domain.mappers.toModel
 import com.swissborg.swissborgtask.domain.models.ui.TickerModel
 import com.swissborg.swissborgtask.domain.usecases.SearchTickers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -46,7 +47,7 @@ class SearchTickersTest {
         testTickersRepositoryImpl.insertItems(TestTickersRepositoryImpl.fullList)
 
         val actual = searchTickers(searchQuery).first()
-        val expected = TestTickersRepositoryImpl.fullList
+        val expected = TestTickersRepositoryImpl.fullList.map { it.toModel() }
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -57,7 +58,8 @@ class SearchTickersTest {
         testTickersRepositoryImpl.insertItems(TestTickersRepositoryImpl.fullList)
 
         val actual = searchTickers(searchQuery).first()
-        val expected = TestTickersRepositoryImpl.fullList.searchItems(searchQuery)
+        val expected =
+            TestTickersRepositoryImpl.fullList.map { it.toModel() }.searchItems(searchQuery)
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -68,7 +70,8 @@ class SearchTickersTest {
         testTickersRepositoryImpl.insertItems(TestTickersRepositoryImpl.fullList)
 
         val actual = searchTickers(searchQuery).first()
-        val expected = TestTickersRepositoryImpl.fullList.searchItems(searchQuery)
+        val expected =
+            TestTickersRepositoryImpl.fullList.map { it.toModel() }.searchItems(searchQuery)
 
         assertThat(actual).isEqualTo(expected)
     }
@@ -79,7 +82,8 @@ class SearchTickersTest {
         testTickersRepositoryImpl.insertItems(TestTickersRepositoryImpl.fullList)
 
         val actual = searchTickers(searchQuery).first()
-        val expected = TestTickersRepositoryImpl.fullList.searchItems(searchQuery)
+        val expected =
+            TestTickersRepositoryImpl.fullList.map { it.toModel() }.searchItems(searchQuery)
 
         assertThat(actual).isEqualTo(expected)
     }

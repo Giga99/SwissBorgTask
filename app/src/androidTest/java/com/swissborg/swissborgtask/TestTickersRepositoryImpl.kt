@@ -2,6 +2,8 @@ package com.swissborg.swissborgtask
 
 import com.swissborg.swissborgtask.common.core.Result
 import com.swissborg.swissborgtask.data.local.TickersDao
+import com.swissborg.swissborgtask.data.local.entities.TickerEntity
+import com.swissborg.swissborgtask.data.local.entities.TickerEntity.TickerDetailsEntity
 import com.swissborg.swissborgtask.domain.mappers.toEntity
 import com.swissborg.swissborgtask.domain.mappers.toModel
 import com.swissborg.swissborgtask.domain.models.enums.TickerType.TradingPair
@@ -17,8 +19,8 @@ class TestTickersRepositoryImpl(
     private val tickersDao: TickersDao
 ) : TickersRepository {
 
-    suspend fun insertItems(tickers: List<TickerModel>) {
-        tickersDao.insertTickers(tickers.map { it.toEntity() })
+    suspend fun insertItems(tickers: List<TickerEntity>) {
+        tickersDao.insertTickers(tickers)
     }
 
     override suspend fun fetchTickers(symbols: String): Result<Unit> =
@@ -37,11 +39,11 @@ class TestTickersRepositoryImpl(
 
     companion object {
         val fullList = listOf(
-            TickerModel(
+            TickerEntity(
+                symbol = "BTC",
                 friendlyName = "Bitcoin",
                 apiName = null,
-                tickerDetails = TickerDetails(
-                    symbol = "BTC",
+                tickerDetails = TickerDetailsEntity(
                     type = TradingPair,
                     flashReturnRate = null,
                     bid = BigDecimal.valueOf(21027.0),
@@ -59,11 +61,11 @@ class TestTickersRepositoryImpl(
                     flashReturnRateAmountAvailable = null
                 )
             ),
-            TickerModel(
+            TickerEntity(
+                symbol = "ETH",
                 friendlyName = "Ethereum",
                 apiName = null,
-                tickerDetails = TickerDetails(
-                    symbol = "ETH",
+                tickerDetails = TickerDetailsEntity(
                     type = TradingPair,
                     flashReturnRate = null,
                     bid = BigDecimal.valueOf(1705.4),
@@ -81,11 +83,11 @@ class TestTickersRepositoryImpl(
                     flashReturnRateAmountAvailable = null
                 )
             ),
-            TickerModel(
+            TickerEntity(
+                symbol = "CHSB",
                 friendlyName = "SwissBorg",
                 apiName = null,
-                tickerDetails = TickerDetails(
-                    symbol = "CHSB",
+                tickerDetails = TickerDetailsEntity(
                     type = TradingPair,
                     flashReturnRate = null,
                     bid = BigDecimal.valueOf(0.18347),
@@ -103,11 +105,11 @@ class TestTickersRepositoryImpl(
                     flashReturnRateAmountAvailable = null
                 )
             ),
-            TickerModel(
+            TickerEntity(
+                symbol = "LTC",
                 friendlyName = "Litecoin",
                 apiName = null,
-                tickerDetails = TickerDetails(
-                    symbol = "LTC",
+                tickerDetails = TickerDetailsEntity(
                     type = TradingPair,
                     flashReturnRate = null,
                     bid = BigDecimal.valueOf(61.11),
@@ -125,11 +127,11 @@ class TestTickersRepositoryImpl(
                     flashReturnRateAmountAvailable = null
                 )
             ),
-            TickerModel(
+            TickerEntity(
+                symbol = "XRP",
                 friendlyName = "Ripple",
                 apiName = null,
-                tickerDetails = TickerDetails(
-                    symbol = "XRP",
+                tickerDetails = TickerDetailsEntity(
                     type = TradingPair,
                     flashReturnRate = null,
                     bid = BigDecimal.valueOf(0.35205),

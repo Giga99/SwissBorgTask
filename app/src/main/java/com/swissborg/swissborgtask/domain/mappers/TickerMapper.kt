@@ -51,30 +51,3 @@ fun TickerDetailsEntity.toModel(symbol: String): TickerDetails =
         low = low,
         flashReturnRateAmountAvailable = flashReturnRateAmountAvailable
     )
-
-fun TickerModel.toEntity(): TickerEntity =
-    TickerEntity(
-        friendlyName = friendlyName,
-        apiName = apiName,
-        symbol = tickerDetails.symbol,
-        tickerDetails = tickerDetails.toEntity()
-    )
-
-fun TickerDetails.toEntity(): TickerDetailsEntity =
-    TickerDetailsEntity(
-        type = type,
-        flashReturnRate = flashReturnRate,
-        bid = bid,
-        bidPeriod = bidPeriod,
-        bidSize = bidSize,
-        ask = ask,
-        askPeriod = askPeriod,
-        askSize = askSize,
-        dailyChange = dailyChange,
-        dailyChangeRelative = dailyChangeRelative,
-        lastPrice = lastPrice,
-        volume = volume,
-        high = high,
-        low = low,
-        flashReturnRateAmountAvailable = flashReturnRateAmountAvailable
-    )
