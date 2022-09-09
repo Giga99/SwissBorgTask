@@ -5,7 +5,7 @@ import com.swissborg.swissborgtask.domain.repositories.TickersRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class SearchTickersUseCase @Inject constructor(
+class SearchTickers @Inject constructor(
     private val tickerRepository: TickersRepository
 ) {
 

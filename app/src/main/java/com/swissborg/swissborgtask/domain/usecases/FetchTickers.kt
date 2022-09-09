@@ -9,7 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class FetchTickersUseCase @Inject constructor(
+class FetchTickers @Inject constructor(
     private val tickerRepository: TickersRepository
 ) {
 
@@ -28,18 +28,5 @@ class FetchTickersUseCase @Inject constructor(
                 return@withContext Result.Error(symbolsApiSymbol.message ?: "Unknown error!")
 
             Result.Success(Unit)
-//            Result.Success(
-//                tickers.data!!.map { ticker ->
-//                    TickerUIModel(
-//                        friendlyName = symbolsFriendlyName.data?.get(ticker.symbol),
-//                        apiName = symbolsApiSymbol.data?.get(ticker.symbol),
-//                        tickerDetails = ticker
-//                    )
-//                }.filter {
-//                    it.friendlyName?.contains(searchQuery) == true
-//                            || it.apiName?.contains(searchQuery) == true
-//                            || it.tickerDetails.symbol.contains(searchQuery)
-//                }
-//            )
         }
 }
